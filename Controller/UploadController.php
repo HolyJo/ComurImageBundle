@@ -135,6 +135,10 @@ class UploadController extends Controller
 
         $src = $uploadUrl.'/'.$imageName;
 
+        if (substr($uploadUrl, -10) == 'web/thumbs') {
+            $uploadUrl = urldecode($config['uploadConfig']['libraryDir']);
+        }
+
         // if($disableCrop){
         //     list($w, $h) = getimagesize($src);
         //     if($config['cropConfig']['aspectRatio'])
