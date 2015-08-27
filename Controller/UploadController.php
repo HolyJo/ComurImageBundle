@@ -135,7 +135,8 @@ class UploadController extends Controller
 
         $src = $uploadUrl.'/'.$imageName;
 
-        if (substr($uploadUrl, -10) == 'web/thumbs') {
+        //LEPTON CHANGE
+        if (strpos($uploadUrl, 'web/thumbs') != -1) {
             $uploadUrl = urldecode($config['uploadConfig']['libraryDir']);
         }
 
