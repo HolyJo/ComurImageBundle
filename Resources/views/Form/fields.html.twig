@@ -27,7 +27,11 @@
                     {% endif %}
                 {% else %}
                     {% if form[name].vars.value %}
-                        <img src="/{{ (options.uploadConfig.webDir ~ '/' ~ form[name].vars.value)|thumb(options.fieldImage.maxWidth, options.fieldImage.maxHeight) }}?{{ 'now'  | date('U') }}" id="{{ form[name].vars.id }}_preview" style="{{ options.uploadConfig.saveOriginal ? 'cursor:hand; cursor: pointer' : ''}}"/>
+                        {% if (form[name].vars.value|slice(0, 8) == '/uploads') %}
+                            <img src="{{ form[name].vars.value }}" id="{{ form[name].vars.id }}_preview" style="{{ options.uploadConfig.saveOriginal ? 'cursor:hand; cursor: pointer' : ''}}"/>
+                        {% else %}
+                            <img src="/{{ (options.uploadConfig.webDir ~ '/' ~ form[name].vars.value)|thumb(options.fieldImage.maxWidth, options.fieldImage.maxHeight) }}?{{ 'now'  | date('U') }}" id="{{ form[name].vars.id }}_preview" style="{{ options.uploadConfig.saveOriginal ? 'cursor:hand; cursor: pointer' : ''}}"/>
+                        {% endif %}
                     {% else %}
                         <img data-src="holder.js/{{ options.fieldImage.maxWidth }}x{{ options.fieldImage.maxHeight}}" id="{{ form[name].vars.id }}_preview"/>
                     {% endif %}
