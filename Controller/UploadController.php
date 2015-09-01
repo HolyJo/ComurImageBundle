@@ -295,7 +295,8 @@ class UploadController extends Controller
         $files = array();
 
         $thumbsDir = $this->container->getParameter('library_thumbs_dir') . '/' . $type;
-
+        $thumbsDir = str_replace('uploads/../', '', $thumbsDir);
+        
         if (!is_dir($thumbsDir)) {
             mkdir($thumbsDir.'/', 0755, true);
         }
