@@ -14,9 +14,9 @@
         </div>
         <div class="image_preview select-image-button" id="image_preview_{{ form[name].vars.id }}" style="z-index: 1050">
             <div class="image_edit_button">
-                <span class="btn btn-success select-image-button">
-                    <i class="glyphicon glyphicon-edit glyphicon-white"></i> {% trans %}Edit{% endtrans %}
-                </span>
+            <span class="btn btn-success select-image-button">
+                <i class="glyphicon glyphicon-edit glyphicon-white"></i> {% trans %}Edit{% endtrans %}
+            </span>
             </div>
             <div id="image_preview_image_{{form[name].vars.id}}">
                 {% if not options.fieldImage %}
@@ -27,6 +27,7 @@
                     {% endif %}
                 {% else %}
                     {% if form[name].vars.value %}
+
                         {% if (form[name].vars.value|slice(0, 8) == '/uploads') %}
                             <img src="{{ form[name].vars.value }}" id="{{ form[name].vars.id }}_preview" style="{{ options.uploadConfig.saveOriginal ? 'cursor:hand; cursor: pointer' : ''}}"/>
                         {% else %}
@@ -36,29 +37,31 @@
                         <img data-src="holder.js/{{ options.fieldImage.maxWidth }}x{{ options.fieldImage.maxHeight}}" id="{{ form[name].vars.id }}_preview"/>
                     {% endif %}
                 {% endif %}
-
             </div>
         </div>
+        {% if help is defined and help is not null %}
+            <span class="help-block pull-right">{{ help|raw }}</span>
+        {% endif %}
     {% endspaceless %}
 
     <script>
         $(document).ready(function(){
             Holder.run();
             {% if options.uploadConfig.saveOriginal %}
-                if($('#{{ form[options.uploadConfig.saveOriginal].vars.id }}').val()){
-                    $('#{{ form[name].vars.id }}_preview').click(function(e){
-                        // console.log(e.target);
-                        if($( e.target ).is( "img" )){
-                            $('<div class="modal hide fade"><img src="/{{options.uploadConfig.webDir}}/{{ form[options.uploadConfig.saveOriginal].vars.value }}"/></div>').modal();
-                            return false;
-                        }
-                    });
-                }
+            if($('#{{ form[options.uploadConfig.saveOriginal].vars.id }}').val()){
+                $('#{{ form[name].vars.id }}_preview').click(function(e){
+                    // console.log(e.target);
+                    if($( e.target ).is( "img" )){
+                        $('<div class="modal hide fade"><img src="/{{options.uploadConfig.webDir}}/{{ form[options.uploadConfig.saveOriginal].vars.value }}"/></div>').modal();
+                        return false;
+                    }
+                });
+            }
             {% endif %}
             $('#image_preview_{{ form[name].vars.id }}.select-image-button .image_edit_button').click(function(event){
                 var options = $.parseJSON('{{ options | json_encode() | raw }}');
                 {% if options.uploadConfig.saveOriginal %}
-                    options['originalImageFieldId'] = '{{ form[options.uploadConfig.saveOriginal].vars.id }}';
+                options['originalImageFieldId'] = '{{ form[options.uploadConfig.saveOriginal].vars.id }}';
                 {% endif %}
                 initializeImageManager('{{ form[name].vars.id }}', options);
                 // console.log('{{form[name].vars.id}} onclick');
