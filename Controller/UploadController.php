@@ -283,6 +283,10 @@ class UploadController extends Controller
      * @param Request $request
      */
     public function getLibraryImagesAction(Request $request){
+
+        //allow a pass through from initializeImageManager JS in comur.imagelibrary.js.
+        $type = $request->query->get('type', 'image');
+
         $finder = new Finder();
 
         $finder->sortByType();
@@ -290,20 +294,25 @@ class UploadController extends Controller
         $result = array();
         $files = array();
 
-        $result['thumbsDir'] = $this->container->getParameter('comur_image.thumbs_dir');
-        
-        if (!is_dir($request->request->get('dir'))) {
-            mkdir($request->request->get('dir').'/', 0755, true);
+        $thumbsDir = $this->container->getParameter('library_thumbs_dir') . '/' . $type;
+
+        if (!is_dir($thumbsDir)) {
+            mkdir($thumbsDir.'/', 0755, true);
         }
 
-        foreach ($finder->in($request->request->get('dir'))->files() as $file) {
+        foreach ($finder->in($thumbsDir)->files() as $file) {
             $files[] = $file->getFilename();
         }
         $result['files'] = $files;
         // var_dump(json_encode($result));exit;
 
-        return new Response(json_encode($result));
+        $result['thumbsDir'] = '../../../thumbs';
+
+        $data = json_encode($result);
+
+        return new Response($data);
     }
+
 
     /**
      * Crops or resizes image and writes it on disk
