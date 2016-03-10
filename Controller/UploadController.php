@@ -57,8 +57,8 @@ class UploadController extends Controller
                     'upload_dir' => $uploadUrl.$thumbsDir.'/',
                     'upload_url' => $config['uploadConfig']['webDir'].'/'.$thumbsDir.'/',
                     'crop' => true,
-                    'max_width' => $thumbSize,
-                    'max_height' => $thumbSize
+                    'max_width' => $config['cropConfig']['thumbs'][0]['maxWidth'] * 2,
+                    'max_height' => $config['cropConfig']['thumbs'][0]['maxHeight'] * 2
                 )
             )
         );
@@ -137,6 +137,7 @@ class UploadController extends Controller
 
         //LEPTON CHANGE
         if (strpos($uploadUrl, 'web/thumbs') != -1) {
+            $src = $uploadUrl.'/thumbs/'.$imageName;
             $uploadUrl = urldecode($config['uploadConfig']['libraryDir']);
         }
 
