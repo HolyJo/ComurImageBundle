@@ -137,8 +137,10 @@ class UploadController extends Controller
 
         //LEPTON CHANGE
         if (strpos($uploadUrl, 'web/thumbs') != -1) {
-            $src = $uploadUrl.'/thumbs/'.$imageName;
+            $src = $uploadUrl.'/'.$imageName;
             $uploadUrl = urldecode($config['uploadConfig']['libraryDir']);
+        } else {
+            $src = $uploadUrl.'/thumbs/'.$imageName;
         }
 
         // if($disableCrop){
