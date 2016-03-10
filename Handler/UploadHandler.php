@@ -723,9 +723,12 @@ class UploadHandler
                 $new_width = $max_width;
                 $new_height = $img_height / ($img_width / $max_width);
             }
-            $dst_x = 0 - ($new_width - $max_width) / 2;
-            $dst_y = 0 - ($new_height - $max_height) / 2;
-            $new_img = imagecreatetruecolor($max_width, $max_height);
+            $dst_x = 0 - ($new_width - $max_width *2) / 2;
+            $dst_y = 0 - ($new_height - $max_height *2) / 2;
+            $new_img = imagecreatetruecolor($max_width *2, $max_height *2);
+
+            $color = imagecolorallocate($new_img, 255, 255, 255);
+            imagefill($new_img, 0, 0, $color);
         }
         // Handle transparency in GIF and PNG images:
         switch ($type) {
